@@ -1,10 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
+import { UserRole } from "../common/enums/user-role.enum";
 
 import { HttpException } from "../common/exceptions/http.exception";
 import { notFoundMessage } from "../common/functions/notFoundMessage";
 import { RequestWithUser } from "../common/interfaces/request-with-user.interface";
 import { validateDto } from "../common/middlewares/dto.middleware";
-import { isTeacher } from "../common/middlewares/isTeacher.middleware";
+import { requiredRole } from "../common/middlewares/requiredRole.middleware";
 import { AssignExamDto } from "../dtos/assign-exam.dto";
 import { CreateExamDto } from "../dtos/create-exam.dto";
 import { UpdateExamDto } from "../dtos/update-exam.dto";
@@ -84,13 +85,13 @@ export class SubjectExamController {
     this.router.get("/:id", this.findOne.bind(this));
     this.router.post(
       "/",
-      isTeacher,
+      requiredRole(UserRole.Teacher),
       validateDto(CreateExamDto),
       this.create.bind(this)
     );
     this.router.post(
       "/:id/assign",
-      isTeacher,
+      requiredRole(UserRole.Teacher),
       validateDto(AssignExamDto),
       this.assign.bind(this)
     );

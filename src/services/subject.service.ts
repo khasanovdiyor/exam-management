@@ -1,6 +1,8 @@
 import { getConnection } from "typeorm";
 import { HttpException } from "../common/exceptions/http.exception";
 import { notFoundMessage } from "../common/functions/notFoundMessage";
+import { CreateSubjectDto } from "../dtos/create-subject.dto";
+import { UpdateSubjectDto } from "../dtos/update-subject.dto";
 import { Subject } from "../entities/subject.entity";
 import { SubjectRepository } from "../repositories/subject.repository";
 
@@ -24,12 +26,19 @@ export class SubjectService {
     return await this.subjectRepository.find();
   }
 
-  async create(subject: Subject) {
+  async create(createSubjectDto: CreateSubjectDto) {
+    const subject = this.subjectRepository.create(createSubjectDto);
     return await this.subjectRepository.save(subject);
   }
 
-  async update(id: number, subject: Subject) {
-    return await this.subjectRepository.update(id, subject);
+  async update(id: number, updateSubjectDto: UpdateSubjectDto) {
+    const subject = await this.subjectRepository.preload({
+      id,
+      ...updateSubjectDto,
+    });
+    if (!subject)
+      throw new HttpException(404, notFoundMessage("Subject", { id }));
+    return await this.subjectRepository.save(subject);
   }
 
   async delete(id: number) {

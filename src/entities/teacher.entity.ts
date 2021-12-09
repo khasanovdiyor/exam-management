@@ -1,4 +1,4 @@
-import { Entity, JoinColumn, JoinTable, ManyToMany, OneToOne } from "typeorm";
+import { Entity, JoinColumn, OneToMany, OneToOne } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { Subject } from "./subject.entity";
 import { User } from "./user.entity";
@@ -9,7 +9,6 @@ export class Teacher extends BaseEntity {
   @JoinColumn()
   user: User;
 
-  @ManyToMany(() => Subject, (subject) => subject.teachers)
-  @JoinTable()
+  @OneToMany(() => Subject, (subject) => subject.teacher)
   subjects: Subject[];
 }

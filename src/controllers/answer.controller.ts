@@ -58,7 +58,7 @@ export class AnswerController {
     this.router.get("/", this.findAll.bind(this));
     this.router.get("/:id", this.findOne.bind(this));
     this.router.post("/", this.create.bind(this));
-    this.router.put("/:id", this.update.bind(this));
+    this.router.patch("/:id", this.update.bind(this));
     this.router.delete("/:id", this.delete.bind(this));
   }
 }

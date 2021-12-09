@@ -55,7 +55,7 @@ export class QuestionController {
       validateDto(CreateQuestionDto),
       this.create.bind(this)
     );
-    this.router.put("/:id", this.update.bind(this));
+    this.router.patch("/:id", this.update.bind(this));
     this.router.delete("/:id", this.delete.bind(this));
   }
 }
